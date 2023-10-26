@@ -1,0 +1,3 @@
+conductor:
+  server:
+    host: http://conductor-server.sandbox.fynarfin.io/api/
