@@ -33,7 +33,7 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
     @Autowired
     private Processor pojoToString;
 
-    @Autowired(required = false)
+    @Autowired
     private AmsService amsService;
 
     @Autowired
@@ -41,9 +41,6 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
 
     @Autowired
     private TransfersResponseProcessor transfersResponseProcessor;
-
-    @Autowired
-    private ClientResponseProcessor clientResponseProcessor;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -65,7 +62,7 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
             if (exception != null) {
                 e.getIn().setBody(exception.getMessage());
             }
-        }).process(clientResponseProcessor).stop();
+        }).stop();
 
         from("direct:get-external-account").id("get-external-account")
                 .log(LoggingLevel.INFO,
@@ -101,14 +98,16 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
                 .log(LoggingLevel.INFO,
                         "Sending transfer with action: ${exchangeProperty." + TRANSFER_ACTION + "} "
                                 + " for transaction: ${exchangeProperty." + TRANSACTION_ID + "}")
-                .to("direct:get-external-account").process(prepareTransferRequest).process(pojoToString).process(amsService::sendTransfer)
-                .to("direct:error-handler") // this route will parse and set error field if exist
+                .to("direct:get-external-account").process(prepareTransferRequest).process(pojoToString)
+                .process(amsService::sendTransfer)
+//                .to("direct:error-handler") // this route will parse and set error field if exist
                 .log("Process type: ${exchangeProperty." + PROCESS_TYPE + "}").choice()
                 .when(exchange -> exchange.getProperty(PROCESS_TYPE) != null && exchange.getProperty(PROCESS_TYPE).equals("api"))
                 .process(exchange -> {
                     int statusCode = exchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE, Integer.class);
+                    logger.info(String.valueOf(exchange.getIn()));
                     if (statusCode > 202) {
-                        Map<String, Object> variables = Utils.getDefaultZeebeErrorVariable(exchange, errorTranslator);
+                        Map<String, Object> variables = Utils.getDefaultErrorVariable(exchange, errorTranslator);
                         exchange.setProperty("outputData", variables);
 
                         logger.error("{}", variables.get(ERROR_INFORMATION));

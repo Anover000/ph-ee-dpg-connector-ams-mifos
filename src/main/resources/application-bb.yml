@@ -9,11 +9,6 @@ ams:
     auth:
       host: https://rhino.mifos.io:8443
     tenants:
-      - name: "gorilla"
-        user: mifos
-        password: password
-        authtype: basic
-        fspId: in02tn03
       - name: "lion"
         user: mifos
         password: password

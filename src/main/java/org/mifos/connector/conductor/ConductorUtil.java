@@ -31,12 +31,12 @@ public class ConductorUtil {
     public List<String> accountPrefixes;
 
     public static void conductorVariablesToCamelProperties(Map<String, Object> variables, Exchange exchange, String... names) {
-        exchange.setProperty("zeebeVariables", variables);
+        exchange.setProperty("conductorVariables", variables);
 
         for (String name : names) {
             Object value = variables.get(name);
             if (value == null) {
-                logger.error("failed to find Zeebe variable name {}", name);
+                logger.error("failed to find  variable name {}", name);
             } else {
                 exchange.setProperty(name, value);
             }
@@ -44,7 +44,7 @@ public class ConductorUtil {
     }
 
     public static Map<String, Object> conductorVariablesFrom(Exchange exchange) {
-        return exchange.getProperty("zeebeVariables", Map.class);
+        return exchange.getProperty("conductorVariables", Map.class);
     }
 
     public static <T> T conductorVariable(Exchange exchange, String name, Class<T> clazz) throws Exception {
@@ -72,7 +72,7 @@ public class ConductorUtil {
         return loanRepaymentDTO;
     }
 
-    public static void setZeebeVariables(Exchange e, Map<String, Object> variables, String requestDate, String accountHoldingInstitutionId,
+    public static void setconductorVariables(Exchange e, Map<String, Object> variables, String requestDate, String accountHoldingInstitutionId,
             String transactionChannelRequestDTO) {
         String dateFormat = "dd MMMM yyyy";
         String currentDate = getCurrentDate(requestDate, dateFormat);

@@ -12,7 +12,7 @@ import org.mifos.connector.ams.errorhandler.ErrorTranslator;
 public class Utils {
 
     // use this utility method only if exchange has ERROR_CODE, ERROR_INFORMATION & ERROR_PAYLOAD variables
-    public static Map<String, Object> getDefaultZeebeErrorVariable(Exchange exchange, ErrorTranslator translator)
+    public static Map<String, Object> getDefaultErrorVariable(Exchange exchange, ErrorTranslator translator)
             throws JsonProcessingException {
         Map<String, Object> variables = new HashMap<>();
         variables.put(ERROR_CODE, exchange.getProperty(ERROR_CODE));

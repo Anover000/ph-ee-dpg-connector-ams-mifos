@@ -22,6 +22,9 @@ public class NetflixConductorConfig {
     @Autowired
     BlockFunds blockFunds;
 
+    @Autowired
+    BookFunds bookFunds;
+
     @PostConstruct
     public void netflixConfig() {
         TaskClient taskClient = new TaskClient();
@@ -32,9 +35,9 @@ public class NetflixConductorConfig {
 
         blockFunds.setTaskDefName("block_funds");
 
-        Worker worker2 = new BookFunds("book_funds");
+        bookFunds.setTaskDefName("book_funds");
 
-        TaskRunnerConfigurer configurer = new TaskRunnerConfigurer.Builder(taskClient, Arrays.asList(blockFunds, worker2))
+        TaskRunnerConfigurer configurer = new TaskRunnerConfigurer.Builder(taskClient, Arrays.asList(blockFunds, bookFunds))
                 .withThreadCount(threadCount).build();
 
         configurer.init();

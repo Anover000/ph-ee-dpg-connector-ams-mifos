@@ -1,7 +1,7 @@
 package org.mifos.connector.ams.interop;
 
 import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSFER_ACTION;
-import static org.mifos.connector.ams.camel.config.CamelProperties.ZEEBE_JOB_KEY;
+import static org.mifos.connector.ams.camel.config.CamelProperties._JOB_KEY;
 import static org.mifos.connector.common.ams.dto.TransferActionType.PREPARE;
 import static org.mifos.connector.conductor.ConductorVariables.*;
 import static org.mifos.connector.conductor.ConductorVariables.ERROR_PAYLOAD;
@@ -50,9 +50,7 @@ public class TransfersResponseProcessor implements Processor {
             variables.put(ACTION_FAILURE_MAP.get(transferAction), false);
         }
 
-        // zeebeClient.newCompleteCommand(exchange.getProperty(ZEEBE_JOB_KEY, Long.class))
-        // .variables(variables)
-        // .send();
-        logger.info("Completed job with key: {}", exchange.getProperty(ZEEBE_JOB_KEY, Long.class));
+        exchange.setProperty("outputData", variables);
+        logger.info("Completed job with key: {}", exchange.getProperty(_JOB_KEY, String.class));
     }
 }

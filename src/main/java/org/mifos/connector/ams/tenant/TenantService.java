@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import jakarta.ws.rs.core.HttpHeaders;
+//import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import javax.ws.rs.core.HttpHeaders;
 
 @Component
 // @ConditionalOnExpression("${ams.local.enabled}")
@@ -37,9 +38,6 @@ public class TenantService {
 
     @Autowired
     private TenantProperties tenantProperties;
-
-    @Autowired
-    private CamelContext camelContext;
 
     @Value("${ams.local.version}")
     private String amsLocalVersion;
@@ -83,14 +81,6 @@ public class TenantService {
             // TODO implement
             throw new RuntimeException("Unsupported authType: " + tenantAuthtype + ", for local fsp version: " + amsLocalVersion
                     + ", for tenant: " + tenant.getName());
-        } else if ("cn".equals(amsLocalVersion) && "oauth".equals(tenantAuthtype)) {
-            Exchange ex = new DefaultExchange(camelContext);
-            ex.setProperty(TENANT_ID, tenant.getName());
-            ex.setProperty(LOGIN_USERNAME, tenant.getUser());
-            ex.setProperty(LOGIN_PASSWORD, tenant.getPassword());
-            producerTemplate.send("direct:fincn-oauth", ex);
-            LoginFineractCnResponseDTO response = ex.getOut().getBody(LoginFineractCnResponseDTO.class);
-            return new CachedTenantAuth(response.getAccessToken(), response.getAccessTokenExpiration());
         } else {
             throw new RuntimeException("Unsupported authType: " + tenantAuthtype + ", for local fsp version: " + amsLocalVersion
                     + ", for tenant: " + tenant.getName());

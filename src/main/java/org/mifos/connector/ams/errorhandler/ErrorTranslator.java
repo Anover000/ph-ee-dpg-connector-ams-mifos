@@ -21,11 +21,11 @@ public class ErrorTranslator {
     @Autowired
     ObjectMapper objectMapper;
 
-    public Map<String, Object> translateError(Map<String, Object> zeebeFinalVariables) {
-        checkIfErrorIsAlreadyMappedToInternal(zeebeFinalVariables);
-        String errorCode = (String) zeebeFinalVariables.get(ERROR_CODE);
+    public Map<String, Object> translateError(Map<String, Object> FinalVariables) {
+        checkIfErrorIsAlreadyMappedToInternal(FinalVariables);
+        String errorCode = (String) FinalVariables.get(ERROR_CODE);
         if (errorCode == null) {
-            return zeebeFinalVariables;
+            return FinalVariables;
         }
 
         PaymentHubError paymentHubError;
@@ -39,43 +39,43 @@ public class ErrorTranslator {
             try {
                 paymentHubError = PaymentHubError.fromCode(errorCode);
             } catch (Exception exc) {
-                return zeebeFinalVariables;
+                return FinalVariables;
             }
         }
 
         PhErrorDTO phErrorDTO;
         try {
-            ErrorResponse externalErrorObject = (ErrorResponse) zeebeFinalVariables.get(ERROR_PAYLOAD);
+            ErrorResponse externalErrorObject = (ErrorResponse) FinalVariables.get(ERROR_PAYLOAD);
             phErrorDTO = new PhErrorDTO.PhErrorDTOBuilder(paymentHubError)
                     .developerMessage(objectMapper.writeValueAsString(externalErrorObject))
-                    .defaultUserMessage((String) zeebeFinalVariables.get(ERROR_INFORMATION)).build();
+                    .defaultUserMessage((String) FinalVariables.get(ERROR_INFORMATION)).build();
         } catch (Exception e) {
-            phErrorDTO = new PhErrorDTO.PhErrorDTOBuilder(paymentHubError).developerMessage((String) zeebeFinalVariables.get(ERROR_PAYLOAD))
-                    .defaultUserMessage((String) zeebeFinalVariables.get(ERROR_INFORMATION)).build();
+            phErrorDTO = new PhErrorDTO.PhErrorDTOBuilder(paymentHubError).developerMessage((String) FinalVariables.get(ERROR_PAYLOAD))
+                    .defaultUserMessage((String) FinalVariables.get(ERROR_INFORMATION)).build();
         }
 
-        zeebeFinalVariables.put(ERROR_CODE, phErrorDTO.getErrorCode());
-        zeebeFinalVariables.put(ERROR_INFORMATION, phErrorDTO.getErrorDescription());
+        FinalVariables.put(ERROR_CODE, phErrorDTO.getErrorCode());
+        FinalVariables.put(ERROR_INFORMATION, phErrorDTO.getErrorDescription());
         try {
-            zeebeFinalVariables.put(ERROR_INFORMATION, objectMapper.writeValueAsString(phErrorDTO));
-            PhErrorDTO errorDTO = objectMapper.readValue((String) zeebeFinalVariables.get(ERROR_INFORMATION), PhErrorDTO.class);
+            FinalVariables.put(ERROR_INFORMATION, objectMapper.writeValueAsString(phErrorDTO));
+            PhErrorDTO errorDTO = objectMapper.readValue((String) FinalVariables.get(ERROR_INFORMATION), PhErrorDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            zeebeFinalVariables.put(ERROR_INFORMATION, phErrorDTO.toString());
+            FinalVariables.put(ERROR_INFORMATION, phErrorDTO.toString());
         }
 
-        return zeebeFinalVariables;
+        return FinalVariables;
     }
 
-    private void checkIfErrorIsAlreadyMappedToInternal(Map<String, Object> zeebeFinalVariables) {
+    private void checkIfErrorIsAlreadyMappedToInternal(Map<String, Object> FinalVariables) {
         boolean isErrorHandled;
         try {
-            isErrorHandled = (boolean) zeebeFinalVariables.get(IS_ERROR_HANDLED);
+            isErrorHandled = (boolean) FinalVariables.get(IS_ERROR_HANDLED);
         } catch (Exception e) {
             isErrorHandled = false;
         }
         if (!isErrorHandled) {
-            zeebeFinalVariables.put(IS_ERROR_HANDLED, true);
+            FinalVariables.put(IS_ERROR_HANDLED, true);
         }
     }
 }

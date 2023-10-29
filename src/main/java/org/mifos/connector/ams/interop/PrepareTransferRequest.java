@@ -14,7 +14,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.mifos.connector.common.ams.dto.TransferFspRequestDTO;
 import org.mifos.connector.common.mojaloop.dto.FspMoneyData;
-import org.mifos.connector.common.mojaloop.dto.TransactionType;
+import org.mifos.connector.common.mojaloop.dto.MoneyData;import org.mifos.connector.common.mojaloop.dto.TransactionType;
 import org.mifos.connector.common.mojaloop.type.InitiatorType;
 import org.mifos.connector.common.mojaloop.type.Scenario;
 import org.mifos.connector.common.mojaloop.type.TransactionRole;
@@ -46,7 +46,9 @@ public class PrepareTransferRequest implements Processor {
         transactionType.setScenario(Scenario.valueOf(scenario));
 
         String note = conductorVariable(exchange, NOTE, String.class);
-        FspMoneyData amount = conductorVariable(exchange, "amount", FspMoneyData.class);
+
+        MoneyData am = exchange.getProperty("amount", MoneyData.class);
+        FspMoneyData amount = objectMapper.convertValue(am, FspMoneyData.class);
         FspMoneyData fspFee = conductorVariable(exchange, "fspFee", FspMoneyData.class);
         FspMoneyData fspCommission = conductorVariable(exchange, "fspCommission", FspMoneyData.class);
 
@@ -64,7 +66,7 @@ public class PrepareTransferRequest implements Processor {
         String transactionCode = exchange.getProperty(BOOK_TRANSACTION_ID, String.class) != null
                 ? exchange.getProperty(BOOK_TRANSACTION_ID, String.class)
                 : exchange.getProperty(TRANSACTION_ID, String.class);
-        logger.debug("using transaction code {}", transactionCode);
+        logger.info("using transaction code {}", transactionCode);
 
         TransferFspRequestDTO transferRequestDTO = null;
 

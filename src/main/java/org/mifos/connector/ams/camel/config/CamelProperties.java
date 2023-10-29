@@ -12,10 +12,9 @@ public class CamelProperties {
     public static final String INTEROP_ACCOUNT_TO_REGISTER = "interopAccountId";
     public static final String LOGIN_USERNAME = "loginUsername";
     public static final String LOGIN_PASSWORD = "loginPassword";
-    public static final String QUOTE_AMOUNT_TYPE = "quoteAmountType";
     public static final String TRANSACTION_ROLE = "transactionRole";
     public static final String TRANSFER_ACTION = "transferAction";
-    public static final String ZEEBE_JOB_KEY = "zeebeJobKey";
+    public static final String _JOB_KEY = "JobKey";
     public static final String PROCESS_TYPE = "processType";
 
     public static final String IS_ERROR_SET_MANUALLY = "isErrorSetManually";

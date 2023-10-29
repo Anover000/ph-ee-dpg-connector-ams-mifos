@@ -7,7 +7,6 @@ import org.apache.camel.spring.boot.CamelContextConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Configuration
 public class CamelContextConfig {
@@ -19,12 +18,11 @@ public class CamelContextConfig {
     CamelContextConfiguration contextConfiguration() {
         return new CamelContextConfiguration() {
 
-
             @Override
             public void beforeApplicationStart(CamelContext camelContext) {
 
-                ClassPathXmlApplicationContext applicationContext =
-                  new ClassPathXmlApplicationContext("endpoints.xml");
+                // ClassPathXmlApplicationContext applicationContext =
+                // new ClassPathXmlApplicationContext("endpoints.xml");
                 camelContext.setTracing(false);
                 camelContext.setMessageHistory(false);
                 camelContext.setStreamCaching(true);
