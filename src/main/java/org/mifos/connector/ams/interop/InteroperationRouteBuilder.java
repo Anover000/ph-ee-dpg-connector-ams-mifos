@@ -1,7 +1,18 @@
 package org.mifos.connector.ams.interop;
 
-import static org.mifos.connector.ams.camel.config.CamelProperties.*;
-import static org.mifos.connector.conductor.ConductorVariables.*;
+import static org.mifos.connector.ams.camel.config.CamelProperties.IS_ERROR_SET_MANUALLY;
+import static org.mifos.connector.ams.camel.config.CamelProperties.PROCESS_TYPE;
+import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSFER_ACTION;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_CODE;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_INFORMATION;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_PAYLOAD;
+import static org.mifos.connector.conductor.ConductorVariables.EXTERNAL_ACCOUNT_ID;
+import static org.mifos.connector.conductor.ConductorVariables.PARTY_ID;
+import static org.mifos.connector.conductor.ConductorVariables.PARTY_ID_TYPE;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSACTION_ID;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_CODE;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_CREATE_FAILED;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_PREPARE_FAILED;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
@@ -73,7 +84,6 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
                     try {
                         amsService.getExternalAccount(exchange);
                     } catch (TenantNotExistException e) {
-                        e.printStackTrace();
                         exchange.setProperty(ERROR_CODE, PaymentHubError.PayeeFspNotConfigured.getErrorCode());
                         exchange.setProperty(ERROR_INFORMATION, PaymentHubError.PayeeFspNotConfigured.getErrorDescription());
                         exchange.setProperty(ERROR_PAYLOAD, PaymentHubError.PayeeFspNotConfigured.getErrorDescription());
@@ -98,9 +108,8 @@ public class InteroperationRouteBuilder extends ErrorHandlerRouteBuilder {
                 .log(LoggingLevel.INFO,
                         "Sending transfer with action: ${exchangeProperty." + TRANSFER_ACTION + "} "
                                 + " for transaction: ${exchangeProperty." + TRANSACTION_ID + "}")
-                .to("direct:get-external-account").process(prepareTransferRequest).process(pojoToString)
-                .process(amsService::sendTransfer)
-//                .to("direct:error-handler") // this route will parse and set error field if exist
+                .to("direct:get-external-account").process(prepareTransferRequest).process(pojoToString).process(amsService::sendTransfer)
+                // .to("direct:error-handler") // this route will parse and set error field if exist
                 .log("Process type: ${exchangeProperty." + PROCESS_TYPE + "}").choice()
                 .when(exchange -> exchange.getProperty(PROCESS_TYPE) != null && exchange.getProperty(PROCESS_TYPE).equals("api"))
                 .process(exchange -> {

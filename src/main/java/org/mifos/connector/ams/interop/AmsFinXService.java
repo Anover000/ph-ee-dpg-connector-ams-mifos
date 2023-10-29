@@ -1,5 +1,13 @@
 package org.mifos.connector.ams.interop;
 
+import static org.apache.camel.Exchange.HTTP_METHOD;
+import static org.apache.camel.Exchange.HTTP_PATH;
+import static org.mifos.connector.ams.camel.cxfrs.HeaderBasedInterceptor.CXF_TRACE_HEADER;
+import static org.mifos.connector.conductor.ConductorVariables.EXTERNAL_ACCOUNT_ID;
+import static org.mifos.connector.conductor.ConductorVariables.TENANT_ID;
+
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.camel.Exchange;
 import org.mifos.connector.ams.camel.cxfrs.CxfrsUtil;
 import org.mifos.connector.ams.tenant.TenantService;
@@ -7,17 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.apache.camel.Exchange.HTTP_METHOD;
-import static org.apache.camel.Exchange.HTTP_PATH;
-import static org.mifos.connector.ams.camel.config.CamelProperties.CLIENT_ID;
-import static org.mifos.connector.ams.camel.config.CamelProperties.IDENTIFIER_ID;
-import static org.mifos.connector.ams.camel.cxfrs.HeaderBasedInterceptor.CXF_TRACE_HEADER;
-import static org.mifos.connector.conductor.ConductorVariables.EXTERNAL_ACCOUNT_ID;
-import static org.mifos.connector.conductor.ConductorVariables.TENANT_ID;
 
 @Component
 @ConditionalOnExpression("'${ams.local.version}'.equals('1.2')")

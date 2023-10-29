@@ -95,10 +95,9 @@ public class BlockFunds implements Worker {
             logger.info("variable {}", map);
             logger.info("Output Data {}", ex.getProperty("outputData"));
             result.setOutputData((Map<String, Object>) ex.getProperty("outputData"));
-            if(ex.getProperty("outputData")==null){
+            if (ex.getProperty("outputData") == null) {
                 result.setStatus(TaskResult.Status.FAILED);
-            }
-            else {
+            } else {
                 result.setStatus(TaskResult.Status.COMPLETED);
             }
 

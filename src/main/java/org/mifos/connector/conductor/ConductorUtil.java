@@ -72,8 +72,8 @@ public class ConductorUtil {
         return loanRepaymentDTO;
     }
 
-    public static void setconductorVariables(Exchange e, Map<String, Object> variables, String requestDate, String accountHoldingInstitutionId,
-            String transactionChannelRequestDTO) {
+    public static void setconductorVariables(Exchange e, Map<String, Object> variables, String requestDate,
+            String accountHoldingInstitutionId, String transactionChannelRequestDTO) {
         String dateFormat = "dd MMMM yyyy";
         String currentDate = getCurrentDate(requestDate, dateFormat);
 

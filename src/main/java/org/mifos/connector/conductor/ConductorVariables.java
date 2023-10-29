@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mifos.connector.common.ams.dto.TransferActionType;
 
-public class ConductorVariables {
+public final class ConductorVariables {
 
     public static final Map<String, String> ACTION_FAILURE_MAP = new HashMap<>();
 

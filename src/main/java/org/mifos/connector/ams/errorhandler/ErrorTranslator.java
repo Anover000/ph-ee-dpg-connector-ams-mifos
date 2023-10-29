@@ -1,6 +1,9 @@
 package org.mifos.connector.ams.errorhandler;
 
-import static org.mifos.connector.conductor.ConductorVariables.*;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_CODE;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_INFORMATION;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_PAYLOAD;
+import static org.mifos.connector.conductor.ConductorVariables.IS_ERROR_HANDLED;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +63,6 @@ public class ErrorTranslator {
             FinalVariables.put(ERROR_INFORMATION, objectMapper.writeValueAsString(phErrorDTO));
             PhErrorDTO errorDTO = objectMapper.readValue((String) FinalVariables.get(ERROR_INFORMATION), PhErrorDTO.class);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             FinalVariables.put(ERROR_INFORMATION, phErrorDTO.toString());
         }
 

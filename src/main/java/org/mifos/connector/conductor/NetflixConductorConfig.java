@@ -3,7 +3,6 @@ package org.mifos.connector.conductor;
 import com.netflix.conductor.client.automator.TaskRunnerConfigurer;
 import com.netflix.conductor.client.http.TaskClient;
 import com.netflix.conductor.client.http.WorkflowClient;
-import com.netflix.conductor.client.worker.Worker;
 import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import org.mifos.connector.conductor.workers.BlockFunds;

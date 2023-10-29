@@ -1,28 +1,19 @@
 package org.mifos.connector.ams.tenant;
 
-import static org.mifos.connector.ams.camel.config.CamelProperties.LOGIN_PASSWORD;
-import static org.mifos.connector.ams.camel.config.CamelProperties.LOGIN_USERNAME;
-import static org.mifos.connector.conductor.ConductorVariables.TENANT_ID;
-
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-//import jakarta.ws.rs.core.HttpHeaders;
-import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
+import javax.ws.rs.core.HttpHeaders;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.support.DefaultExchange;
 import org.mifos.connector.ams.properties.Tenant;
 import org.mifos.connector.ams.properties.TenantProperties;
-import org.mifos.connector.common.ams.dto.LoginFineractCnResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import javax.ws.rs.core.HttpHeaders;
 
 @Component
 // @ConditionalOnExpression("${ams.local.enabled}")
@@ -88,8 +79,9 @@ public class TenantService {
     }
 
     private boolean isAccessTokenExpired(Date accessTokenExpiration) {
-        if (accessTokenExpiration == null) // basic is stateless and has no expiration
+        if (accessTokenExpiration == null) { // basic is stateless and has no expiration
             return false;
+        }
 
         Date fiveMinsFromNow = new Date(System.currentTimeMillis() + 300 * 1000);
         return accessTokenExpiration.before(fiveMinsFromNow);

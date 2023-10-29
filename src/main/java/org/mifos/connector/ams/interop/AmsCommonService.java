@@ -4,7 +4,6 @@ import static org.apache.camel.Exchange.HTTP_METHOD;
 import static org.apache.camel.Exchange.HTTP_PATH;
 import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSFER_ACTION;
 import static org.mifos.connector.ams.camel.cxfrs.HeaderBasedInterceptor.CXF_TRACE_HEADER;
-import static org.mifos.connector.conductor.ConductorVariables.ACCOUNT_NUMBER;
 import static org.mifos.connector.conductor.ConductorVariables.PARTY_ID;
 import static org.mifos.connector.conductor.ConductorVariables.PARTY_ID_TYPE;
 import static org.mifos.connector.conductor.ConductorVariables.TENANT_ID;

@@ -1,6 +1,6 @@
 package org.mifos.connector.conductor.workers;
 
-import static org.mifos.connector.ams.camel.config.CamelProperties.PROCESS_TYPE;import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSACTION_ROLE;
+import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSACTION_ROLE;
 import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSFER_ACTION;
 import static org.mifos.connector.ams.camel.config.CamelProperties._JOB_KEY;
 import static org.mifos.connector.common.ams.dto.TransferActionType.CREATE;
@@ -30,8 +30,8 @@ import org.mifos.connector.common.mojaloop.type.TransactionRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;import org.springframework.stereotype.Component;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class BookFunds implements Worker {

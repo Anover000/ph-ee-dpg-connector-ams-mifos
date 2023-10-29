@@ -2,7 +2,11 @@ package org.mifos.connector.ams.properties;
 
 public class Tenant {
 
-    private String name, user, password, authtype, fspId;
+    private String name;
+    private String user;
+    private String password;
+    private String authtype;
+    private String fspId;
 
     public Tenant() {}
 

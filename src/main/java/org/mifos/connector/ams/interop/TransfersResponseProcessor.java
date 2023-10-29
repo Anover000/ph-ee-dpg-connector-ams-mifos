@@ -3,8 +3,13 @@ package org.mifos.connector.ams.interop;
 import static org.mifos.connector.ams.camel.config.CamelProperties.TRANSFER_ACTION;
 import static org.mifos.connector.ams.camel.config.CamelProperties._JOB_KEY;
 import static org.mifos.connector.common.ams.dto.TransferActionType.PREPARE;
-import static org.mifos.connector.conductor.ConductorVariables.*;
+import static org.mifos.connector.conductor.ConductorVariables.ACTION_FAILURE_MAP;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_CODE;
+import static org.mifos.connector.conductor.ConductorVariables.ERROR_INFORMATION;
 import static org.mifos.connector.conductor.ConductorVariables.ERROR_PAYLOAD;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_CODE;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_CREATE_FAILED;
+import static org.mifos.connector.conductor.ConductorVariables.TRANSFER_RESPONSE_PREFIX;
 
 import java.util.HashMap;
 import java.util.Map;
